@@ -1,0 +1,291 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 14px;
+  --background: #f8fafb;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #4f96ff;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: #e1f0ff;
+  --secondary-foreground: #2563eb;
+  --muted: #f1f6ff;
+  --muted-foreground: #64748b;
+  --accent: #dbeafe;
+  --accent-foreground: #1e40af;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(79, 150, 255, 0.15);
+  --input: transparent;
+  --input-background: #f1f6ff;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: oklch(0.708 0 0);
+  --chart-1: #4f96ff;
+  --chart-2: #93c5fd;
+  --chart-3: #60a5fa;
+  --chart-4: #3b82f6;
+  --chart-5: #2563eb;
+  --radius: 0.625rem;
+  --sidebar: #f1f6ff;
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #4f96ff;
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: #e1f0ff;
+  --sidebar-accent-foreground: #2563eb;
+  --sidebar-border: rgba(79, 150, 255, 0.15);
+  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* 커스텀 파스텔 블루 색상 */
+  --pastel-blue-50: #f0f8ff;
+  --pastel-blue-100: #e1f0ff;
+  --pastel-blue-200: #c7e4ff;
+  --pastel-blue-300: #a3d2ff;
+  --pastel-blue-400: #7bb8ff;
+  --pastel-blue-500: #4f96ff;
+  --pastel-blue-600: #2563eb;
+  --pastel-blue-700: #1d4ed8;
+  --pastel-blue-800: #1e40af;
+  --pastel-blue-900: #1e3a8a;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: #4f96ff;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #4f96ff;
+  --chart-2: #93c5fd;
+  --chart-3: #60a5fa;
+  --chart-4: #3b82f6;
+  --chart-5: #2563eb;
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #4f96ff;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* 커스텀 파스텔 블루 유틸리티 */
+  --color-pastel-blue-50: var(--pastel-blue-50);
+  --color-pastel-blue-100: var(--pastel-blue-100);
+  --color-pastel-blue-200: var(--pastel-blue-200);
+  --color-pastel-blue-300: var(--pastel-blue-300);
+  --color-pastel-blue-400: var(--pastel-blue-400);
+  --color-pastel-blue-500: var(--pastel-blue-500);
+  --color-pastel-blue-600: var(--pastel-blue-600);
+  --color-pastel-blue-700: var(--pastel-blue-700);
+  --color-pastel-blue-800: var(--pastel-blue-800);
+  --color-pastel-blue-900: var(--pastel-blue-900);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* 커스텀 파스텔 블루 유틸리티 클래스 */
+@layer utilities {
+  .bg-pastel-blue-50 { background-color: var(--pastel-blue-50); }
+  .bg-pastel-blue-100 { background-color: var(--pastel-blue-100); }
+  .bg-pastel-blue-200 { background-color: var(--pastel-blue-200); }
+  .bg-pastel-blue-300 { background-color: var(--pastel-blue-300); }
+  .bg-pastel-blue-400 { background-color: var(--pastel-blue-400); }
+  .bg-pastel-blue-500 { background-color: var(--pastel-blue-500); }
+  .bg-pastel-blue-600 { background-color: var(--pastel-blue-600); }
+  .bg-pastel-blue-700 { background-color: var(--pastel-blue-700); }
+  .bg-pastel-blue-800 { background-color: var(--pastel-blue-800); }
+  .bg-pastel-blue-900 { background-color: var(--pastel-blue-900); }
+  
+  .text-pastel-blue-50 { color: var(--pastel-blue-50); }
+  .text-pastel-blue-100 { color: var(--pastel-blue-100); }
+  .text-pastel-blue-200 { color: var(--pastel-blue-200); }
+  .text-pastel-blue-300 { color: var(--pastel-blue-300); }
+  .text-pastel-blue-400 { color: var(--pastel-blue-400); }
+  .text-pastel-blue-500 { color: var(--pastel-blue-500); }
+  .text-pastel-blue-600 { color: var(--pastel-blue-600); }
+  .text-pastel-blue-700 { color: var(--pastel-blue-700); }
+  .text-pastel-blue-800 { color: var(--pastel-blue-800); }
+  .text-pastel-blue-900 { color: var(--pastel-blue-900); }
+  
+  .border-pastel-blue-200 { border-color: var(--pastel-blue-200); }
+  .border-pastel-blue-300 { border-color: var(--pastel-blue-300); }
+}
+
+/* Date input 캘린더 아이콘 스타일링 */
+@layer utilities {
+  input[type="date"] {
+    position: relative;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.3) sepia(1) saturate(3) hue-rotate(200deg) brightness(0.7);
+    opacity: 0.9;
+    transition: all 0.2s ease;
+    width: 16px;
+    height: 16px;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    filter: invert(0.1) sepia(1) saturate(3) hue-rotate(200deg) brightness(0.5);
+    transform: scale(1.05);
+  }
+
+  /* Firefox 대응 */
+  input[type="date"]::-moz-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.9;
+    filter: invert(0.3) sepia(1) saturate(3) hue-rotate(200deg) brightness(0.7);
+  }
+
+  input[type="date"]::-moz-calendar-picker-indicator:hover {
+    opacity: 1;
+    filter: invert(0.1) sepia(1) saturate(3) hue-rotate(200deg) brightness(0.5);
+  }
+
+  /* date-input 클래스 추가 스타일 */
+  .date-input {
+    color-scheme: light;
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    background-image: none;
+    filter: invert(0.2) sepia(1) saturate(4) hue-rotate(200deg) brightness(0.6) contrast(1.2);
+    opacity: 1;
+  }
+
+  .date-input::-webkit-calendar-picker-indicator:hover {
+    filter: invert(0.1) sepia(1) saturate(4) hue-rotate(200deg) brightness(0.4) contrast(1.3);
+  }
+}
