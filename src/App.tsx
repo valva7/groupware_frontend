@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Button } from "./components/ui/button";
-import { Input } from "./components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
 import { ScrollArea } from "./components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "./components/ui/sheet";
 import { 
@@ -17,20 +15,13 @@ import {
   BookOpen, 
   HelpCircle, 
   Bell, 
-  Search, 
-  Menu,
-  ChevronDown,
-  ChevronRight,
   X,
-  PanelLeftClose,
-  PanelLeft,
   Calendar,
   AlertCircle,
   CheckCircle2,
-  Settings,
   Shield
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 // 컴포넌트 import
 import { DashboardSidebar } from "./components/DashboardSidebar";
