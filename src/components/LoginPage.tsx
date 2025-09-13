@@ -8,6 +8,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Building2, Mail, Lock, Eye, EyeOff, Send, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import * as React from "react";
+import authService from "../api/service/authService";
+import {useAuthStore} from "../hooks/useAuthStore";
+import {LoginReq} from "../api/types/authTypes";
 
 
 interface LoginPageProps {
@@ -15,21 +18,22 @@ interface LoginPageProps {
 }
 
 export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
-  const [email, setEmail] = useState("");
+  const { login } = useAuthStore();
+  const [memberId, setMemberId] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
   // 비밀번호 찾기 관련 상태
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+  const [resetMemberId, setResetMemberId] = useState("");
   const [isResetLoading, setIsResetLoading] = useState(false);
-  const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [resetMemberIdSent, setResetMemberIdSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!memberId || !password) {
       toast.error("이메일과 비밀번호를 입력해주세요.");
       return;
     }
@@ -37,14 +41,14 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
     setIsLoading(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      if (email === "admin@company.com" && password === "admin123") {
-        toast.success("로그인에 성공했습니다!");
-        onLogin();
-      } else {
-        toast.error("이메일 또는 비밀번호가 올바르지 않습니다.");
-      }
+      const body: LoginReq = { memberId, password };
+      const res = await authService.login(body);
+
+      // 토큰 저장 후 훅 상태 업데이트
+      await login(res.data.accessToken);
+
+      // 페이지 이동 등 처리
+      window.location.href = "/dashboard";
     } catch (error) {
       toast.error("로그인 중 오류가 발생했습니다.");
     } finally {
@@ -55,18 +59,6 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!resetEmail) {
-      toast.error("이메일을 입력해주세요.");
-      return;
-    }
-
-    // 이메일 형식 검증
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(resetEmail)) {
-      toast.error("올바른 이메일 형식을 입력해주세요.");
-      return;
-    }
-
     setIsResetLoading(true);
 
     try {
@@ -74,8 +66,8 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // 등록된 이메일인지 확인 (데모용)
-      if (resetEmail === "admin@company.com" || resetEmail.includes("@company.com")) {
-        setResetEmailSent(true);
+      if (resetMemberId === "admin") {
+        setResetMemberIdSent(true);
         toast.success("비밀번호 재설정 이메일이 전송되었습니다!");
       } else {
         toast.error("등록되지 않은 이메일 주소입니다.");
@@ -89,8 +81,8 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
 
   const handleResetDialogClose = () => {
     setIsResetDialogOpen(false);
-    setResetEmail("");
-    setResetEmailSent(false);
+    setResetMemberId("");
+    setResetMemberIdSent(false);
     setIsResetLoading(false);
   };
 
@@ -119,15 +111,15 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">이메일</Label>
+                <Label htmlFor="memberId">이메일</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    id="email"
-                    type="email"
+                    id="memberId"
+                    type="memberId"
                     placeholder="admin@company.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={memberId}
+                    onChange={(e) => setMemberId(e.target.value)}
                     className="pl-10"
                     disabled={isLoading}
                   />
@@ -199,14 +191,14 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
                       비밀번호 찾기
                     </DialogTitle>
                     <DialogDescription>
-                      {resetEmailSent 
+                      {resetMemberIdSent
                         ? "비밀번호 재설정 이메일이 전송되었습니다." 
                         : "등록된 이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다."
                       }
                     </DialogDescription>
                   </DialogHeader>
                   
-                  {resetEmailSent ? (
+                  {resetMemberIdSent ? (
                     <div className="space-y-4">
                       <div className="flex flex-col items-center text-center space-y-4">
                         <div className="p-3 bg-green-100 rounded-full">
@@ -215,7 +207,7 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
                         <div>
                           <p className="font-medium text-green-800">이메일 전송 완료!</p>
                           <p className="text-sm text-muted-foreground mt-1">
-                            <strong>{resetEmail}</strong>로<br />
+                            <strong>{resetMemberId}</strong>로<br />
                             비밀번호 재설정 링크를 전송했습니다.
                           </p>
                         </div>
@@ -233,15 +225,15 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
                   ) : (
                     <form onSubmit={handlePasswordReset} className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="resetEmail">이메일 주소</Label>
+                        <Label htmlFor="resetMemberId">이메일 주소</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
-                            id="resetEmail"
-                            type="email"
+                            id="resetMemberId"
+                            type="memberId"
                             placeholder="example@company.com"
-                            value={resetEmail}
-                            onChange={(e) => setResetEmail(e.target.value)}
+                            value={resetMemberId}
+                            onChange={(e) => setResetMemberId(e.target.value)}
                             className="pl-10"
                             disabled={isResetLoading}
                           />
@@ -263,13 +255,13 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
                       onClick={handleResetDialogClose}
                       disabled={isResetLoading}
                     >
-                      {resetEmailSent ? "닫기" : "취소"}
+                      {resetMemberIdSent ? "닫기" : "취소"}
                     </Button>
-                    {!resetEmailSent && (
+                    {!resetMemberIdSent && (
                       <Button
                         type="submit"
                         onClick={handlePasswordReset}
-                        disabled={isResetLoading || !resetEmail}
+                        disabled={isResetLoading || !resetMemberId}
                         className="flex items-center gap-2"
                       >
                         {isResetLoading ? (
@@ -294,8 +286,8 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
             <Alert className="mt-4">
               <AlertDescription>
                 <strong>데모 계정:</strong><br />
-                이메일: admin@company.com<br />
-                비밀번호: admin123
+                이메일: admin<br />
+                비밀번호: admin
               </AlertDescription>
             </Alert>
           </CardContent>
