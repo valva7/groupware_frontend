@@ -44,7 +44,7 @@ export function AppRouter({
   handleCreateApproval,
   handleBackToApprovalList,
   appState
-}: AppRouterProps) {
+}: Readonly<AppRouterProps>) {
   const getPageTitle = () => {
     return PAGE_TITLES[currentPage as keyof typeof PAGE_TITLES] || "대시보드";
   };

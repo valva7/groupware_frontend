@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Label } from "../ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Plus, ArrowLeft, Edit, Search, Eye, MessageSquare, Heart, Calendar, User, Send } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { BOARD_CATEGORIES } from "../../data/constants";
 
 interface BoardPagesProps {
@@ -42,7 +42,7 @@ export function BoardPages({
   setBoardForm,
   currentUser,
   employees
-}: BoardPagesProps) {
+}: Readonly<BoardPagesProps>) {
   const [newComment, setNewComment] = useState("");
 
   if (currentPage === "board") {

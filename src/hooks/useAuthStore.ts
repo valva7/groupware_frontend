@@ -1,5 +1,6 @@
 // src/store/useAuthStore.ts
 import { create } from "zustand";
+import * as jwtDecodeModule from "jwt-decode"; // import * as
 import { Member, JwtPayload } from "../api/types/authTypes";
 
 const ACCESS_TOKEN_KEY = "accessToken";
@@ -13,7 +14,6 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set, get) => {
-  const jwtDecode = require("jwt-decode") as <T>(token: string) => T;
 
   return {
     member: null,
@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
     // 로그인 후 토큰 저장 & 상태 업데이트
     login: async (token: string) => {
       localStorage.setItem(ACCESS_TOKEN_KEY, token);
-
+      const jwtDecode = jwtDecodeModule as unknown as <T>(token: string) => T;
       const payload: JwtPayload = jwtDecode<JwtPayload>(token);
       set({
         member: {
@@ -49,6 +49,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
       }
 
       try {
+        const jwtDecode = jwtDecodeModule as unknown as <T>(token: string) => T;
         const payload: JwtPayload = jwtDecode<JwtPayload>(token);
 
         set({

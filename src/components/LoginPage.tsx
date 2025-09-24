@@ -42,13 +42,14 @@ export function LoginPage({ onLogin }: Readonly<LoginPageProps>) {
 
     try {
       const body: LoginReq = { memberId, password };
-      const res = await authService.login(body);
+      //const res = await authService.login(body);
 
       // 토큰 저장 후 훅 상태 업데이트
-      await login(res.data.accessToken);
+      //await login(res.data.accessToken);
 
       // 페이지 이동 등 처리
-      window.location.href = "/dashboard";
+      //window.location.href = "/dashboard";
+      onLogin();
     } catch (error) {
       toast.error("로그인 중 오류가 발생했습니다.");
     } finally {
