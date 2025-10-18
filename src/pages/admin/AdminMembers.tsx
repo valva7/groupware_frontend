@@ -30,7 +30,7 @@ export function AdminMembers() {
       position: '선임연구원',
       joinDate: '2023-03-15',
       status: 'active',
-      role: 'member',
+      role: 'USER',
       permissions: {
         project: true
       },
@@ -47,7 +47,7 @@ export function AdminMembers() {
       position: '주임연구원',
       joinDate: '2023-06-01',
       status: 'active',
-      role: 'member',
+      role: 'USER',
       permissions: {
         project: true
       },
@@ -97,7 +97,7 @@ export function AdminMembers() {
       position: '연구원',
       joinDate: '2024-02-01',
       status: 'active',
-      role: 'member',
+      role: 'USER',
       permissions: {
         project: true
       },
@@ -131,8 +131,8 @@ export function AdminMembers() {
   ];
 
   const roleList = [
-    { key: 'member', label: '일반 직원', description: '일반 직원' },
-    { key: 'admin', label: '관리자', description: '관리자' },
+    { key: 'USER', label: '일반 직원', description: '일반 직원' },
+    { key: 'ADMIN', label: '관리자', description: '관리자' },
   ];
 
   const permissionList = [
@@ -175,7 +175,7 @@ export function AdminMembers() {
     setFormData({
       name: '', email: '', phone: '', memberId: '',
       department: '', position: '', joinDate: '',
-      role: 'member',
+      role: 'USER',
       permissions: {
         project: false
       },
@@ -305,10 +305,10 @@ export function AdminMembers() {
                         {member.status === 'active' ? '활성' : '비활성'}
                       </Badge>
                       <Badge variant={
-                        member.role === 'admin' ? 'destructive' : 
+                        member.role === 'ADMIN' ? 'destructive' : 
                         member.role === 'manager' ? 'default' : 'outline'
                       }>
-                        {member.role === 'admin' ? '관리자' : 
+                        {member.role === 'ADMIN' ? '관리자' : 
                          member.role === 'manager' ? '팀장' : '일반'}
                       </Badge>
                     </div>
@@ -404,10 +404,10 @@ export function AdminMembers() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant={
-                      member.role === 'admin' ? 'destructive' : 
+                      member.role === 'ADMIN' ? 'destructive' : 
                       member.role === 'manager' ? 'default' : 'outline'
                     } className="text-xs">
-                      {member.role === 'admin' ? '관리자' : 
+                      {member.role === 'ADMIN' ? '관리자' : 
                        member.role === 'manager' ? '팀장' : '일반'}
                     </Badge>
                   </div>
@@ -585,10 +585,10 @@ export function AdminMembers() {
                 {selectedMember.status === 'active' ? '활성' : '비활성'}
               </Badge>
               <Badge variant={
-                selectedMember.role === 'admin' ? 'destructive' : 
+                selectedMember.role === 'ADMIN' ? 'destructive' : 
                 selectedMember.role === 'manager' ? 'default' : 'outline'
               }>
-                {selectedMember.role === 'admin' ? '관리자' : 
+                {selectedMember.role === 'ADMIN' ? '관리자' : 
                  selectedMember.role === 'manager' ? '팀장' : '일반 직원'}
               </Badge>
             </div>
