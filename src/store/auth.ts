@@ -31,10 +31,5 @@ export const useAuthStore = create<AuthState>()(
 export const mockMember: Member = {
   id: '1',
   name: '김그룹웨어',
-  email: 'kim@coev1.com',
-  department: '개발팀',
-  position: '선임연구원',
-  profileImage: undefined,
-  joinDate: '2024-01-15',
-  status: 'active',
+  profileImageUrl: undefined,
 };

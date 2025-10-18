@@ -27,13 +27,9 @@ export function AdminMembers() {
       phone: '010-1234-5678',
       department: '개발팀',
       position: '선임연구원',
-      employeeId: 'C2023001',
       joinDate: '2023-03-15',
-      birthDate: '1990-05-20',
       status: 'active',
       role: 'member',
-      address: '서울시 강남구 테헤란로 123',
-      emergencyContact: '010-9876-5432',
       permissions: {
         approval: true, project: true, vote: false, board: false,
         wiki: true, organization: false, admin: false, assets: false,
@@ -48,13 +44,9 @@ export function AdminMembers() {
       phone: '010-2345-6789',
       department: '디자인팀',
       position: '주임연구원',
-      employeeId: 'C2023002',
       joinDate: '2023-06-01',
-      birthDate: '1992-08-15',
       status: 'active',
       role: 'member',
-      address: '서울시 서초구 서초대로 456',
-      emergencyContact: '010-8765-4321',
       permissions: {
         approval: false, project: true, vote: false, board: true,
         wiki: true, organization: false, admin: false, assets: false,
@@ -69,13 +61,9 @@ export function AdminMembers() {
       phone: '010-3456-7890',
       department: '마케팅팀',
       position: '팀장',
-      employeeId: 'C2022001',
       joinDate: '2022-01-10',
-      birthDate: '1985-12-03',
       status: 'active',
       role: 'manager',
-      address: '서울시 종로구 종로 789',
-      emergencyContact: '010-7654-3210',
       permissions: {
         approval: true, project: true, vote: true, board: true,
         wiki: true, organization: true, admin: false, assets: true,
@@ -90,13 +78,9 @@ export function AdminMembers() {
       phone: '010-4567-8901',
       department: '인사팀',
       position: '과장',
-      employeeId: 'C2021003',
       joinDate: '2021-09-20',
-      birthDate: '1988-03-12',
       status: 'inactive',
       role: 'manager',
-      address: '서울시 마포구 홍대입구 101',
-      emergencyContact: '010-6543-2109',
       permissions: {
         approval: true, project: false, vote: true, board: true,
         wiki: false, organization: true, admin: true, assets: true,
@@ -111,13 +95,9 @@ export function AdminMembers() {
       phone: '010-5678-9012',
       department: '개발팀',
       position: '연구원',
-      employeeId: 'C2024001',
       joinDate: '2024-02-01',
-      birthDate: '1995-07-25',
       status: 'active',
       role: 'member',
-      address: '경기도 성남시 분당구 판교역로 202',
-      emergencyContact: '010-5432-1098',
       permissions: {
         approval: false, project: true, vote: false, board: false,
         wiki: true, organization: false, admin: false, assets: false,
@@ -131,24 +111,18 @@ export function AdminMembers() {
     name: '',
     email: '',
     phone: '',
-    birthDate: '',
-    
+
     // 2단계: 근무 정보
     department: '',
     position: '',
-    employeeId: '',
     joinDate: '',
     
     // 3단계: 계정 정보
-    username: '',
     password: '',
     confirmPassword: '',
     role: 'member',
     
     // 4단계: 권한 설정 및 추가 정보
-    address: '',
-    emergencyContact: '',
-    notes: '',
     permissions: {
       approval: false,        // 전자결재 권한
       project: false,         // 프로젝트 관리 권한
@@ -164,19 +138,11 @@ export function AdminMembers() {
   const steps = [
     { number: 1, title: '기본 정보', description: '성명, 이메일, 연락처 등' },
     { number: 2, title: '근무 정보', description: '부서, 직급, 입사일 등' },
-    { number: 3, title: '계정 정보', description: '로그인 정보 및 기본 권한' },
-    { number: 4, title: '권한 설정', description: '세부 권한 및 추가 정보' },
+    { number: 3, title: '권한 설정', description: '세부 권한 및 추가 정보' },
   ];
 
   const permissionList = [
-    { key: 'approval', label: '전자결재 권한', description: '결재 문서 작성, 승인, 관리' },
     { key: 'project', label: '프로젝트 관리 권한', description: '프로젝트 생성, 수정, 삭제' },
-    { key: 'vote', label: '투표 관리 권한', description: '투표 생성, 관리' },
-    { key: 'board', label: '게시판 관리 권한', description: '게시물 관리, 공지사항 작성' },
-    { key: 'wiki', label: '위키 편집 권한', description: '위키 문서 생성, 편집' },
-    { key: 'organization', label: '조직 관리 권한', description: '부서, 직원 정보 관리' },
-    { key: 'admin', label: '시스템 관리 권한', description: '시스템 설정, 사용자 관리' },
-    { key: 'assets', label: '자산 관리 권한', description: '회사 자산 등록, 관리' },
   ];
 
   const handleNext = () => {
@@ -192,7 +158,7 @@ export function AdminMembers() {
         return;
       }
     } else if (currentStep === 3) {
-      if (!formData.username || !formData.password || formData.password !== formData.confirmPassword) {
+      if (!formData.password || formData.password !== formData.confirmPassword) {
         toast.error('계정 정보를 올바르게 입력해주세요.');
         return;
       }
@@ -213,10 +179,9 @@ export function AdminMembers() {
     toast.success('새로운 직원이 등록되었습니다.');
     // 폼 초기화
     setFormData({
-      name: '', email: '', phone: '', birthDate: '',
-      department: '', position: '', employeeId: '', joinDate: '',
-      username: '', password: '', confirmPassword: '', role: 'member',
-      address: '', emergencyContact: '', notes: '',
+      name: '', email: '', phone: '',
+      department: '', position: '', joinDate: '',
+      password: '', confirmPassword: '', role: 'member',
       permissions: {
         approval: false, project: false, vote: false, board: false,
         wiki: false, organization: false, admin: false, assets: false,
@@ -240,9 +205,7 @@ export function AdminMembers() {
     const matchesSearch = 
       member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
-    
+      member.department.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDepartment = !departmentFilter || member.department === departmentFilter;
     const matchesStatus = !statusFilter || member.status === statusFilter;
     
@@ -326,7 +289,6 @@ export function AdminMembers() {
                       <div>
                         <div className="font-medium">{member.name}</div>
                         <div className="text-sm text-muted-foreground">{member.email}</div>
-                        <div className="text-xs text-muted-foreground">{member.employeeId}</div>
                       </div>
                     </div>
                   </td>
@@ -446,7 +408,6 @@ export function AdminMembers() {
                     <span>입사: {member.joinDate}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">{member.employeeId}</Badge>
                     <Badge variant={
                       member.role === 'admin' ? 'destructive' : 
                       member.role === 'manager' ? 'default' : 'outline'
@@ -556,11 +517,6 @@ export function AdminMembers() {
                   <span className="truncate">{formData.phone}</span>
                 </div>
               )}
-              {formData.employeeId && (
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">{formData.employeeId}</Badge>
-                </div>
-              )}
               {formData.joinDate && (
                 <div className="flex items-center gap-2">
                   <Calendar className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
@@ -569,25 +525,6 @@ export function AdminMembers() {
               )}
             </div>
           </div>
-
-          {/* 계정 정보 */}
-          {formData.username && (
-            <div className="border-t pt-3">
-              <h4 className="font-medium mb-2">계정 정보</h4>
-              <div className="space-y-1 text-sm">
-                <div>사용자명: {formData.username}</div>
-                <div>기본 권한: 
-                  <Badge variant={
-                    formData.role === 'admin' ? 'destructive' : 
-                    formData.role === 'manager' ? 'default' : 'secondary'
-                  } className="ml-2">
-                    {formData.role === 'admin' ? '관리자' : 
-                     formData.role === 'manager' ? '팀장' : '일반 직원'}
-                  </Badge>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* 세부 권한 */}
           {enabledPermissions.length > 0 && (
@@ -599,18 +536,6 @@ export function AdminMembers() {
                     {permission}
                   </Badge>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* 추가 정보 */}
-          {(formData.address || formData.emergencyContact || formData.notes) && (
-            <div className="border-t pt-3">
-              <h4 className="font-medium mb-2">추가 정보</h4>
-              <div className="space-y-1 text-sm text-muted-foreground">
-                {formData.address && <div>주소: {formData.address}</div>}
-                {formData.emergencyContact && <div>비상연락처: {formData.emergencyContact}</div>}
-                {formData.notes && <div>메모: {formData.notes}</div>}
               </div>
             </div>
           )}
@@ -682,18 +607,6 @@ export function AdminMembers() {
                 <Phone className="h-4 w-4 text-muted-foreground" />
                 <span>{selectedMember.phone}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span>생년월일: {selectedMember.birthDate}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span>{selectedMember.address}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span>비상연락처: {selectedMember.emergencyContact}</span>
-              </div>
             </div>
           </div>
 
@@ -707,9 +620,6 @@ export function AdminMembers() {
               <div className="flex items-center gap-2">
                 <UserCheck className="h-4 w-4 text-muted-foreground" />
                 <span>직급: {selectedMember.position}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline">{selectedMember.employeeId}</Badge>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -793,13 +703,6 @@ export function AdminMembers() {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">사번</label>
-            <Input
-              value={editFormData.employeeId || ''}
-              onChange={(e) => setEditFormData(prev => ({ ...prev, employeeId: e.target.value }))}
-            />
-          </div>
-          <div className="space-y-2">
             <label className="text-sm font-medium">상태</label>
             <select
               className="w-full px-3 py-2 border border-border rounded-md bg-background"
@@ -822,22 +725,6 @@ export function AdminMembers() {
               <option value="admin">관리자</option>
             </select>
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium">주소</label>
-          <Input
-            value={editFormData.address || ''}
-            onChange={(e) => setEditFormData(prev => ({ ...prev, address: e.target.value }))}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium">비상연락처</label>
-          <Input
-            value={editFormData.emergencyContact || ''}
-            onChange={(e) => setEditFormData(prev => ({ ...prev, emergencyContact: e.target.value }))}
-          />
         </div>
 
         {/* 권한 설정 */}
@@ -914,14 +801,6 @@ export function AdminMembers() {
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">생년월일</label>
-                <Input
-                  type="date"
-                  value={formData.birthDate}
-                  onChange={(e) => setFormData(prev => ({ ...prev, birthDate: e.target.value }))}
-                />
-              </div>
             </div>
           </div>
         );
@@ -956,44 +835,7 @@ export function AdminMembers() {
               </div>
             </div>
             
-            {/* 선택된 부서/직급 정보 표시 */}
-            {(formData.department || formData.position) && (
-              <div className="bg-accent/30 border rounded-lg p-3 md:p-4">
-                <h4 className="font-medium mb-2 md:mb-3 flex items-center gap-2 text-sm md:text-base">
-                  <UserCheck className="h-3 w-3 md:h-4 md:w-4" />
-                  선택된 근무 정보
-                </h4>
-                <div className="grid grid-cols-1 gap-2 md:gap-4 text-xs md:text-sm">
-                  {formData.department && (
-                    <div className="flex items-center gap-2">
-                      <Building className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
-                      <span className="font-medium">부서:</span>
-                      <Badge variant="secondary" className="text-xs">{formData.department}</Badge>
-                    </div>
-                  )}
-                  {formData.position && (
-                    <div className="flex items-center gap-2">
-                      <Users className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
-                      <span className="font-medium">직급:</span>
-                      <Badge variant="secondary" className="text-xs">{formData.position}</Badge>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">사번</label>
-                <Input
-                  placeholder="C2024001"
-                  value={formData.employeeId}
-                  onChange={(e) => setFormData(prev => ({ ...prev, employeeId: e.target.value }))}
-                />
-                <p className="text-xs text-muted-foreground">
-                  사번을 입력하지 않으면 자동으로 생성됩니다.
-                </p>
-              </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">입사일 *</label>
                 <Input
@@ -1011,55 +853,27 @@ export function AdminMembers() {
       
       case 3:
         return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">사용자명 *</label>
-              <Input
-                placeholder="hong.gildong"
-                value={formData.username}
-                onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">비밀번호 *</label>
-                <Input
-                  type="password"
-                  placeholder="비밀번호"
-                  value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">비밀번호 확인 *</label>
-                <Input
-                  type="password"
-                  placeholder="비밀번호 확인"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">기본 권한</label>
-              <select
-                className="w-full px-3 py-2 border border-border rounded-md bg-background"
-                value={formData.role}
-                onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-              >
-                <option value="member">일반 직원</option>
-                <option value="manager">팀장</option>
-                <option value="admin">관리자</option>
-              </select>
-            </div>
-          </div>
-        );
-      
-      case 4:
-        return (
           <div className="space-y-6">
             {/* 권한 설정 섹션 */}
             <div className="space-y-4">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 pb-2 border-b">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <h3 className="font-medium">기본 권한</h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <select
+                        className="w-full px-3 py-2 border border-border rounded-md bg-background"
+                        value={formData.role}
+                        onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                    >
+                      <option value="member">일반 직원</option>
+                      <option value="admin">관리자</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div className="flex items-center gap-2 pb-2 border-b">
                 <Shield className="h-5 w-5 text-primary" />
                 <h3 className="font-medium">세부 권한 설정</h3>
@@ -1077,42 +891,6 @@ export function AdminMembers() {
                     />
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* 추가 정보 섹션 */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 pb-2 border-b">
-                <MapPin className="h-5 w-5 text-primary" />
-                <h3 className="font-medium">추가 정보</h3>
-              </div>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">주소</label>
-                  <Input
-                    placeholder="서울시 강남구..."
-                    value={formData.address}
-                    onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">비상연락처</label>
-                  <Input
-                    placeholder="010-9876-5432"
-                    value={formData.emergencyContact}
-                    onChange={(e) => setFormData(prev => ({ ...prev, emergencyContact: e.target.value }))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">메모</label>
-                  <textarea
-                    className="w-full px-3 py-2 border border-border rounded-md bg-background resize-none"
-                    rows={3}
-                    placeholder="추가 정보나 특이사항을 입력하세요..."
-                    value={formData.notes}
-                    onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                  />
-                </div>
               </div>
             </div>
           </div>
@@ -1155,7 +933,7 @@ export function AdminMembers() {
                 <CardHeader className="card-header p-4 md:p-6">
                   <CardTitle className="flex items-center gap-2 text-base md:text-lg">
                     <UserPlus className="h-4 w-4 md:h-5 md:w-5" />
-                    <span className="hidden sm:inline">새 직원 등록 - 4단계 프로세스</span>
+                    <span className="hidden sm:inline">새 직원 등록 - 3단계 프로세스</span>
                     <span className="sm:hidden">직원 등록</span>
                   </CardTitle>
                   
