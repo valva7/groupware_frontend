@@ -25,14 +25,14 @@ export function AdminMembers() {
       name: '김철수',
       email: 'kim.cheolsu@coev1.com',
       phone: '010-1234-5678',
+      memberId: 'devKim',
       department: '개발팀',
       position: '선임연구원',
       joinDate: '2023-03-15',
       status: 'active',
       role: 'member',
       permissions: {
-        approval: true, project: true, vote: false, board: false,
-        wiki: true, organization: false, admin: false, assets: false,
+        project: true
       },
       avatar: null,
       lastLogin: '2024-09-30 09:30:00'
@@ -42,14 +42,14 @@ export function AdminMembers() {
       name: '이영희',
       email: 'lee.younghee@coev1.com',
       phone: '010-2345-6789',
+      memberId: 'devKim2',
       department: '디자인팀',
       position: '주임연구원',
       joinDate: '2023-06-01',
       status: 'active',
       role: 'member',
       permissions: {
-        approval: false, project: true, vote: false, board: true,
-        wiki: true, organization: false, admin: false, assets: false,
+        project: true
       },
       avatar: null,
       lastLogin: '2024-09-30 08:45:00'
@@ -59,14 +59,14 @@ export function AdminMembers() {
       name: '박민수',
       email: 'park.minsu@coev1.com',
       phone: '010-3456-7890',
+      memberId: 'devKim3',
       department: '마케팅팀',
       position: '팀장',
       joinDate: '2022-01-10',
       status: 'active',
       role: 'manager',
       permissions: {
-        approval: true, project: true, vote: true, board: true,
-        wiki: true, organization: true, admin: false, assets: true,
+        project: true
       },
       avatar: null,
       lastLogin: '2024-09-29 18:20:00'
@@ -82,8 +82,7 @@ export function AdminMembers() {
       status: 'inactive',
       role: 'manager',
       permissions: {
-        approval: true, project: false, vote: true, board: true,
-        wiki: false, organization: true, admin: true, assets: true,
+        project: true
       },
       avatar: null,
       lastLogin: '2024-09-25 15:10:00'
@@ -93,14 +92,14 @@ export function AdminMembers() {
       name: '최동욱',
       email: 'choi.dongwook@coev1.com',
       phone: '010-5678-9012',
+      memberId: 'devkim4',
       department: '개발팀',
       position: '연구원',
       joinDate: '2024-02-01',
       status: 'active',
       role: 'member',
       permissions: {
-        approval: false, project: true, vote: false, board: false,
-        wiki: true, organization: false, admin: false, assets: false,
+        project: true
       },
       avatar: null,
       lastLogin: '2024-09-30 10:15:00'
@@ -109,6 +108,7 @@ export function AdminMembers() {
   const [formData, setFormData] = useState({
     // 1단계: 기본 정보
     name: '',
+    memberId: '',
     email: '',
     phone: '',
 
@@ -116,22 +116,11 @@ export function AdminMembers() {
     department: '',
     position: '',
     joinDate: '',
-    
-    // 3단계: 계정 정보
-    password: '',
-    confirmPassword: '',
+
+    // 3단계: 권한 설정 및 추가 정보
     role: 'member',
-    
-    // 4단계: 권한 설정 및 추가 정보
     permissions: {
-      approval: false,        // 전자결재 권한
       project: false,         // 프로젝트 관리 권한
-      vote: false,           // 투표 관리 권한
-      board: false,          // 게시판 관리 권한
-      wiki: false,           // 위키 편집 권한
-      organization: false,   // 조직 관리 권한
-      admin: false,          // 시스템 관리 권한
-      assets: false,         // 자산 관리 권한
     },
   });
 
@@ -139,6 +128,11 @@ export function AdminMembers() {
     { number: 1, title: '기본 정보', description: '성명, 이메일, 연락처 등' },
     { number: 2, title: '근무 정보', description: '부서, 직급, 입사일 등' },
     { number: 3, title: '권한 설정', description: '세부 권한 및 추가 정보' },
+  ];
+
+  const roleList = [
+    { key: 'member', label: '일반 직원', description: '일반 직원' },
+    { key: 'admin', label: '관리자', description: '관리자' },
   ];
 
   const permissionList = [
@@ -152,19 +146,19 @@ export function AdminMembers() {
         toast.error('필수 항목을 모두 입력해주세요.');
         return;
       }
-    } else if (currentStep === 2) {
+    } else if (currentStep === 3) {
       if (!formData.department || !formData.position || !formData.joinDate) {
         toast.error('필수 항목을 모두 입력해주세요.');
         return;
       }
     } else if (currentStep === 3) {
-      if (!formData.password || formData.password !== formData.confirmPassword) {
-        toast.error('계정 정보를 올바르게 입력해주세요.');
+      if (!formData.role) {
+        toast.error('기본 권한을 선택해주세요.');
         return;
       }
     }
     
-    if (currentStep < 4) {
+    if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -179,12 +173,11 @@ export function AdminMembers() {
     toast.success('새로운 직원이 등록되었습니다.');
     // 폼 초기화
     setFormData({
-      name: '', email: '', phone: '',
+      name: '', email: '', phone: '', memberId: '',
       department: '', position: '', joinDate: '',
-      password: '', confirmPassword: '', role: 'member',
+      role: 'member',
       permissions: {
-        approval: false, project: false, vote: false, board: false,
-        wiki: false, organization: false, admin: false, assets: false,
+        project: false
       },
     });
     setCurrentStep(1);
@@ -288,6 +281,7 @@ export function AdminMembers() {
                       </div>
                       <div>
                         <div className="font-medium">{member.name}</div>
+                        <div className="font-medium">{member.memberId}</div>
                         <div className="text-sm text-muted-foreground">{member.email}</div>
                       </div>
                     </div>
@@ -398,6 +392,7 @@ export function AdminMembers() {
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
                     <span>{member.email}</span>
+                    <span>{member.memberId}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-muted-foreground" />
@@ -481,6 +476,10 @@ export function AdminMembers() {
   };
 
   const renderPreview = () => {
+    console.log(formData.role)
+    console.log(roleList)
+    const enabledRole = roleList.find(role => role.key === formData.role)?.label;
+
     const enabledPermissions = Object.entries(formData.permissions)
       .filter(([_, enabled]) => enabled)
       .map(([key, _]) => permissionList.find(p => p.key === key)?.label)
@@ -507,6 +506,12 @@ export function AdminMembers() {
             </div>
             
             <div className="space-y-2 text-xs md:text-sm">
+              {formData.memberId && (
+                  <div className="flex items-center gap-2">
+                    <User className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
+                    <span className="truncate">{formData.memberId}</span>
+                  </div>
+              )}
               <div className="flex items-center gap-2">
                 <Mail className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground flex-shrink-0" />
                 <span className="truncate">{formData.email || '이메일을 입력하세요'}</span>
@@ -525,6 +530,18 @@ export function AdminMembers() {
               )}
             </div>
           </div>
+
+          {/*기본 권한*/}
+          {enabledRole && (
+            <div className="border-t pt-3">
+              <h4 className="font-medium mb-2">기본 권한</h4>
+              <div className="flex flex-wrap gap-1">
+                <Badge kvariant="secondary" className="text-xs">
+                  {enabledRole}
+                </Badge>
+              </div>
+            </div>
+          )}
 
           {/* 세부 권한 */}
           {enabledPermissions.length > 0 && (
@@ -663,18 +680,20 @@ export function AdminMembers() {
       <div className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">성명 *</label>
+            <label className="text-sm font-medium">성명</label>
             <Input
               value={editFormData.name || ''}
               onChange={(e) => setEditFormData(prev => ({ ...prev, name: e.target.value }))}
+              disabled
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">이메일 *</label>
+            <label className="text-sm font-medium">이메일</label>
             <Input
               type="email"
               value={editFormData.email || ''}
               onChange={(e) => setEditFormData(prev => ({ ...prev, email: e.target.value }))}
+              disabled
             />
           </div>
           <div className="space-y-2">
@@ -682,6 +701,7 @@ export function AdminMembers() {
             <Input
               value={editFormData.phone || ''}
               onChange={(e) => setEditFormData(prev => ({ ...prev, phone: e.target.value }))}
+              disabled
             />
           </div>
           <div className="space-y-2">
@@ -703,14 +723,15 @@ export function AdminMembers() {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium">상태</label>
+            <label className="text-sm font-medium">재직 상태</label>
             <select
               className="w-full px-3 py-2 border border-border rounded-md bg-background"
-              value={editFormData.status || 'active'}
+              value={editFormData.status || 'WORK'}
               onChange={(e) => setEditFormData(prev => ({ ...prev, status: e.target.value }))}
             >
-              <option value="active">활성</option>
-              <option value="inactive">비활성</option>
+              <option value="WORK">재직중</option>
+              <option value="MATLV">출산 휴가</option>
+              <option value="RET">퇴사</option>
             </select>
           </div>
           <div className="space-y-2">
@@ -721,7 +742,6 @@ export function AdminMembers() {
               onChange={(e) => setEditFormData(prev => ({ ...prev, role: e.target.value }))}
             >
               <option value="member">일반 직원</option>
-              <option value="manager">팀장</option>
               <option value="admin">관리자</option>
             </select>
           </div>
@@ -783,6 +803,14 @@ export function AdminMembers() {
                 />
               </div>
               <div className="space-y-2">
+                <label className="text-sm font-medium">직원 ID *</label>
+                <Input
+                    placeholder="직원 ID"
+                    value={formData.memberId}
+                    onChange={(e) => setFormData(prev => ({ ...prev, memberId: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-2">
                 <label className="text-sm font-medium">이메일 *</label>
                 <Input
                   type="email"
@@ -791,14 +819,12 @@ export function AdminMembers() {
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">연락처</label>
+                <label className="text-sm font-medium">연락처 *</label>
                 <Input
-                  placeholder="010-1234-5678"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="010-1234-5678"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                 />
               </div>
             </div>
@@ -1057,8 +1083,9 @@ export function AdminMembers() {
                     onChange={(e) => setStatusFilter(e.target.value)}
                   >
                     <option value="">전체 상태</option>
-                    <option value="active">활성</option>
-                    <option value="inactive">비활성</option>
+                    <option value="WORK">재직중</option>
+                    <option value="MATLV">출산 휴가</option>
+                    <option value="RET">퇴사</option>
                   </select>
                 </div>
                 
