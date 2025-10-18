@@ -118,7 +118,7 @@ export function AdminMembers() {
     joinDate: '',
 
     // 3단계: 권한 설정 및 추가 정보
-    role: 'member',
+    role: '',
     permissions: {
       project: false,         // 프로젝트 관리 권한
     },
@@ -738,9 +738,10 @@ export function AdminMembers() {
             <label className="text-sm font-medium">기본 권한</label>
             <select
               className="w-full px-3 py-2 border border-border rounded-md bg-background"
-              value={editFormData.role || 'member'}
+              value={editFormData.role || ''}
               onChange={(e) => setEditFormData(prev => ({ ...prev, role: e.target.value }))}
             >
+              <option value="">권한 선택</option>
               <option value="member">일반 직원</option>
               <option value="admin">관리자</option>
             </select>
@@ -894,6 +895,7 @@ export function AdminMembers() {
                         value={formData.role}
                         onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
                     >
+                      <option value="">선택</option>
                       <option value="member">일반 직원</option>
                       <option value="admin">관리자</option>
                     </select>
