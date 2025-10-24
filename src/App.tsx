@@ -38,7 +38,6 @@ import { ManualDetail } from './pages/communication/ManualDetail';
 // Admin pages
 import { AdminApproval } from './pages/admin/AdminApproval';
 import { AdminPosts } from './pages/admin/AdminPosts';
-import { AdminCategories } from './pages/admin/AdminCategories';
 import { AdminMembers } from './pages/admin/AdminMembers';
 import { AdminOrganization } from './pages/admin/AdminOrganization';
 import { AdminAssets } from './pages/admin/AdminAssets';
@@ -104,7 +103,6 @@ export default function App() {
             <Route path="admin/posts" element={<AdminPosts />} />
             <Route path="admin/posts/detail/:id" element={<PostDetail />} />
             <Route path="admin/posts/edit/:id" element={<PostCreate />} />
-            <Route path="admin/categories" element={<AdminCategories />} />
             <Route path="admin/members" element={<AdminMembers />} />
             <Route path="admin/organization" element={<AdminOrganization />} />
             <Route path="admin/assets" element={<AdminAssets />} />

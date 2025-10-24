@@ -2,12 +2,7 @@
 export interface Member {
   id: string;
   name: string;
-  email: string;
-  department: string;
-  position: string;
-  profileImage?: string;
-  joinDate: string;
-  status: 'active' | 'inactive';
+  profileImageUrl?: string;
 }
 
 export interface Department {

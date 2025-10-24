@@ -86,7 +86,6 @@ const menuItems = [
     items: [
       { title: '전자결재 관리', url: '/admin/approval' },
       { title: '게시물 관리', url: '/admin/posts' },
-      { title: '카테고리 관리', url: '/admin/categories' },
       { title: '직원 생성/관리', url: '/admin/members' },
       { title: '조직 관리', url: '/admin/organization' },
       { title: '비품/자산 관리', url: '/admin/assets' },
