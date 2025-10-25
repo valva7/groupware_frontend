@@ -8,7 +8,7 @@ import { Textarea } from '../../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
 import { Badge } from '../../components/ui/badge';
 import { ArrowLeft, X, BookOpen, Upload, FileText, Image, File, Download, Trash2 } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 

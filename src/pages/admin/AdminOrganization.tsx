@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../componen
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import { Building, Plus, Edit, Trash2, Users } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 
 interface DepartmentNode {
   id: string;

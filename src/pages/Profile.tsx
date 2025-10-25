@@ -5,13 +5,12 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Badge } from '../components/ui/badge';
 import { Switch } from '../components/ui/switch';
 import { Progress } from '../components/ui/progress';
 import { User, Folder, Bell, Calendar, MapPin, Phone, Mail, Edit } from 'lucide-react';
-import { useAuthStore } from '../store/auth';
-import { toast } from 'sonner@2.0.3';
+import { useAuthStore } from '@/store/useAuthStore';
+import { toast } from "sonner";
 import { Project } from '../types';
 import { ProfileImageUpload } from '../components/ProfileImageUpload';
 
@@ -50,8 +49,7 @@ const statusConfig = {
 };
 
 export function Profile() {
-  const member = useAuthStore((state) => state.member);
-  const updateProfile = useAuthStore((state) => state.updateProfile);
+  const member = useAuthStore((state) => state.user);
   const [formData, setFormData] = useState({
     name: member?.name || '',
     email: member?.email || '',
@@ -72,21 +70,12 @@ export function Profile() {
     // 실제 환경에서는 API 호출로 프로필 업데이트
     console.log('프로필 업데이트:', formData);
     
-    // Zustand store 업데이트
-    updateProfile({
-      name: formData.name,
-      email: formData.email,
-      profileImage: formData.profileImage,
-    });
-    
     toast.success('프로필이 업데이트되었습니다.');
   };
 
   const handleImageChange = (imageUrl: string) => {
     setFormData(prev => ({ ...prev, profileImage: imageUrl }));
     
-    // 즉시 프로필 이미지 업데이트
-    updateProfile({ profileImage: imageUrl });
   };
 
   const handleNotificationChange = (key: string, value: boolean) => {

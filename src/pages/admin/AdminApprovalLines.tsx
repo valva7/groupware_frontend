@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../componen
 import { Label } from '../../components/ui/label';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../../components/ui/command';
 import { Search, Plus, Edit, Trash2, Users, X, GripVertical } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 
 interface ApprovalLine {
   id: string;

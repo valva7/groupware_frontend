@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Popover, PopoverContent, PopoverTrigger } from '../../components/ui/popover';
 import { Calendar } from '../../components/ui/calendar';
 import { Check, ChevronsUpDown, X, Plus, GripVertical, CalendarIcon, Upload, File, Trash2 } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { cn } from '../../components/ui/utils';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

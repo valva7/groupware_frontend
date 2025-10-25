@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner';
-import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
+import { ProtectedRoute, PublicRoute } from '@/components/AuthRoute';
 import { Layout } from './components/Layout';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
@@ -47,7 +47,17 @@ import { AdminCommonCodes } from './pages/admin/AdminCommonCodes';
 // Profile page
 import { Profile } from './pages/Profile';
 
+import {useAuthStore} from "@/store/useAuthStore";
+import {useEffect} from "react";
+
 export default function App() {
+
+  const restoreSession = useAuthStore((state) => state.restoreSession);
+
+  useEffect(() => {
+    restoreSession(); // 새로고침/브라우저 재시작 시 세션 복원
+  }, [restoreSession]);
+
   return (
     <Router>
       <div className="min-h-screen bg-background">

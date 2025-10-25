@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 import { ArrowLeft, BookOpen, Edit, Calendar, User, Tag, Download, FileText, Image, Video, File } from 'lucide-react';
 import { Wiki, Attachment } from '../../types';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 
 // Mock data (실제로는 API에서 가져올 데이터)
 const mockWikis: Wiki[] = [

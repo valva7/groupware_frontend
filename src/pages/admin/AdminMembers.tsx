@@ -6,7 +6,7 @@ import { Badge } from '../../components/ui/badge';
 import { Switch } from '../../components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { Search, Plus, Users, UserPlus, User, Mail, Phone, Calendar, Building, Shield, MapPin, UserCheck, Edit, Trash2, Eye } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { DepartmentPositionSelector } from '../../components/DepartmentPositionSelector';
 
 export function AdminMembers() {

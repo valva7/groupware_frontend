@@ -6,12 +6,13 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { LogOut, Settings, User } from 'lucide-react';
-import { useAuthStore } from '../store/auth';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from './ui/use-mobile';
 
 export function Layout() {
-  const { member, logout } = useAuthStore();
+  const member = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 

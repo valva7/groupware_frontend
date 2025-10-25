@@ -11,7 +11,7 @@ import { Label } from '../../components/ui/label';
 import { Checkbox } from '../../components/ui/checkbox';
 import { Progress } from '../../components/ui/progress';
 import { Search, Plus, Vote as VoteIcon, Users, Calendar, Clock } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { Vote } from '../../types';
 
 const mockVotes: Vote[] = [

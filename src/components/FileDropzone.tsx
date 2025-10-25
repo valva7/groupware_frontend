@@ -5,7 +5,7 @@ import { Card, CardContent } from './ui/card';
 import { Label } from './ui/label';
 import { Progress } from './ui/progress';
 import { cn } from './ui/utils';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 
 interface FileItem {
   id: string;

@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { useAuthStore, mockMember } from '../store/auth';
-import { toast } from 'sonner@2.0.3';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuthStore } from "@/store/useAuthStore";
+import { toast } from "sonner";
+import authService from "@/api/service/authService";
 
 export function Login() {
-  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
@@ -17,25 +18,28 @@ export function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!id || !password) {
       toast.error('이메일과 비밀번호를 모두 입력해주세요.');
       return;
     }
 
     setLoading(true);
     
-    // Mock login logic
-    setTimeout(() => {
-      if (email === 'kim@coev1.com' && password === 'password') {
-        login(mockMember);
-        toast.success('로그인 되었습니다.');
-        navigate('/dashboard');
-      } else {
-        toast.error('이메일 또는 비밀번호가 올바르지 않습니다.');
-      }
-      setLoading(false);
-    }, 1000);
-  };
+    const res = await authService.login({
+      memberId: id,
+      password: password
+    });
+
+    if (res.code === 200) {
+      login(res.data.accessToken);
+      toast.success('로그인 되었습니다.');
+      navigate('/dashboard');
+    } else {
+      toast.error('계정 정보가 일치하지 않습니다.');
+    }
+
+    setLoading(false);
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 p-4">
@@ -55,10 +59,10 @@ export function Login() {
               <Label htmlFor="email">이메일</Label>
               <Input
                 id="email"
-                type="email"
-                placeholder="your-email@coev1.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="kimgleam"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
                 disabled={loading}
               />
             </div>

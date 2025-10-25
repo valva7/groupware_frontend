@@ -7,7 +7,7 @@ import { Textarea } from '../../components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
 import { CheckCircle, XCircle, Clock, MessageSquare, FileText, ArrowLeft, Download, Image, Video, File } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { Attachment } from '../../types';
 import { useNavigate } from 'react-router-dom';
 

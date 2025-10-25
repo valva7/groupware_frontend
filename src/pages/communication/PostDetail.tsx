@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar'
 import { Separator } from '../../components/ui/separator';
 import { Textarea } from '../../components/ui/textarea';
 import { ArrowLeft, Eye, MessageSquare, Heart, Share2, ThumbsUp, Reply, ChevronRight } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { Post, Comment } from '../../types';
 
 // Board.tsx와 동일한 mockPosts 데이터

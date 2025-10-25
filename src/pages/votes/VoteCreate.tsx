@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../../components/ui/pop
 import { Switch } from '../../components/ui/switch';
 import { Checkbox } from '../../components/ui/checkbox';
 import { ArrowLeft, Calendar as CalendarIcon, X, Plus } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 

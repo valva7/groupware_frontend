@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../../components/ui/command';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
 import { Search, Users, Plus, X, Calendar, Folder } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { Project, Member } from '../../types';
 
 const mockProjects: Project[] = [

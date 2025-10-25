@@ -12,7 +12,7 @@ import { Badge } from '../../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { ArrowLeft, Calendar as CalendarIcon, X, Users, Plus, Search, User } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 

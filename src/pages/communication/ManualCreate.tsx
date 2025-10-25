@@ -10,7 +10,7 @@ import { Badge } from '../../components/ui/badge';
 import { Switch } from '../../components/ui/switch';
 import { ArrowLeft, X, FileText, Download } from 'lucide-react';
 import { FileDropzone } from '../../components/FileDropzone';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 

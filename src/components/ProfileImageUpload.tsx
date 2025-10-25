@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { cn } from './ui/utils';
-import { toast } from 'sonner@2.0.3';
+import { toast } from "sonner";
 
 interface ProfileImageUploadProps {
   currentImageUrl?: string;

@@ -1,13 +1,13 @@
-import { LeaveWidget } from '../components/dashboard/LeaveWidget';
-import { ApprovalWidget } from '../components/dashboard/ApprovalWidget';
-import { CalendarWidget } from '../components/dashboard/CalendarWidget';
-import { PostWidget } from '../components/dashboard/PostWidget';
-import { VoteWidget } from '../components/dashboard/VoteWidget';
-import { ProjectWidget } from '../components/dashboard/ProjectWidget';
-import { useAuthStore } from '../store/auth';
+import { LeaveWidget } from '@/components/dashboard/LeaveWidget';
+import { ApprovalWidget } from '@/components/dashboard/ApprovalWidget';
+import { CalendarWidget } from '@/components/dashboard/CalendarWidget';
+import { PostWidget } from '@/components/dashboard/PostWidget';
+import { VoteWidget } from '@/components/dashboard/VoteWidget';
+import { ProjectWidget } from '@/components/dashboard/ProjectWidget';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export function Dashboard() {
-  const member = useAuthStore((state) => state.member);
+  const member = useAuthStore((state) => state.user);
 
   return (
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
