@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "target": "ESNext",
     "module": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -15,5 +19,8 @@
     "moduleResolution": "Node",
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "vite-env.d.ts"
+  ]
 }

@@ -56,9 +56,9 @@ export function Login() {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">이메일</Label>
+              <Label htmlFor="email">아이디</Label>
               <Input
-                id="email"
+                id="id"
                 type="text"
                 placeholder="kimgleam"
                 value={id}
@@ -88,7 +88,7 @@ export function Login() {
           
           <div className="mt-6 p-4 bg-muted rounded-lg">
             <p className="text-sm text-muted-foreground mb-2">테스트 계정:</p>
-            <p className="text-sm font-mono">이메일: kim@coev1.com</p>
+            <p className="text-sm font-mono">아이디: kimgleam</p>
             <p className="text-sm font-mono">비밀번호: password</p>
           </div>
         </CardContent>
