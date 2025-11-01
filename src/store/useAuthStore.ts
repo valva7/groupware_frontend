@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { parseToken, isTokenExpired, TokenPayload } from "@/utils/tokenUtils";
-import {Member} from "@/types";
 
 interface AuthState {
   token: string | null;

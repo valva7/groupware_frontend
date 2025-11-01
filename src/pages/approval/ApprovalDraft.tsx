@@ -17,16 +17,27 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 
 interface Member {
-  id: string;
+  memberId: string;
   name: string;
   department: string;
   position: string;
 }
 
+interface ApprovalMember {
+  memberId: string;
+  sequence: number;
+}
+
+interface ReferenceMember {
+  memberId: string;
+  sequence: number;
+}
+
 interface VacationSchedule {
   id: string;
-  date: Date | undefined;
-  type: 'full' | 'half_morning' | 'half_afternoon' | 'hours';
+  type: 'full' | 'hours';
+  startDate: Date | undefined;
+  endDate?: Date | undefined;
   startTime?: string;
   endTime?: string;
   reason?: string;
@@ -92,7 +103,7 @@ const DraggableApprover = ({ approver, index, moveApprover, removeMember }: Drag
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => removeMember(approver.id, 'approver')}
+        onClick={() => removeMember(approver.memberId, 'approver')}
         className="flex-shrink-0"
       >
         <X className="h-4 w-4" />
@@ -150,7 +161,7 @@ const DraggableReference = ({ reference, index, moveReference, removeMember }: D
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => removeMember(reference.id, 'reference')}
+        onClick={() => removeMember(reference.memberId, 'reference')}
         className="flex-shrink-0"
       >
         <X className="h-4 w-4" />
@@ -160,20 +171,18 @@ const DraggableReference = ({ reference, index, moveReference, removeMember }: D
 };
 
 const mockMembers: Member[] = [
-  { id: '1', name: '김팀장', department: '개발팀', position: '팀장' },
-  { id: '2', name: '이부장', department: '개발팀', position: '부장' },
-  { id: '3', name: '박상무', department: '경영진', position: '상무' },
-  { id: '4', name: '최대표', department: '경영진', position: '대표이사' },
-  { id: '5', name: '홍인사', department: '인사팀', position: '팀장' },
-  { id: '6', name: '김경리', department: '경리팀', position: '과장' },
+  { memberId: '1', name: '김팀장', department: '개발팀', position: '팀장' },
+  { memberId: '2', name: '이부장', department: '개발팀', position: '부장' },
+  { memberId: '3', name: '박상무', department: '경영진', position: '상무' },
+  { memberId: '4', name: '최대표', department: '경영진', position: '대표이사' },
+  { memberId: '5', name: '홍인사', department: '인사팀', position: '팀장' },
+  { memberId: '6', name: '김경리', department: '경리팀', position: '과장' },
 ];
 
 const approvalTypes = [
   { value: 'vacation', label: '휴가신청서' },
   { value: 'purchase', label: '구매요청서' },
-  { value: 'business_trip', label: '출장신청서' },
   { value: 'education', label: '교육신청서' },
-  { value: 'overtime', label: '연장근무신청서' },
   { value: 'expense', label: '지출결의서' },
 ];
 
@@ -204,10 +213,6 @@ export function ApprovalDraft() {
     vacationType: '',
     startDate: undefined as Date | undefined,
     endDate: undefined as Date | undefined,
-    // 출장신청서 필드
-    destination: '',
-    tripPurpose: '',
-    estimatedCost: '',
     // 지출결의서 필드
     expenseCategory: '',
     amount: '',
@@ -220,10 +225,6 @@ export function ApprovalDraft() {
     educationName: '',
     educationDate: undefined as Date | undefined,
     educationCost: '',
-    // 연장근무신청서 필드
-    overtimeDate: undefined as Date | undefined,
-    overtimeStartTime: '',
-    overtimeEndTime: '',
   });
   const [approvers, setApprovers] = useState<Member[]>([]);
   const [references, setReferences] = useState<Member[]>([]);
@@ -236,7 +237,7 @@ export function ApprovalDraft() {
 
   const handleSubmit = (action: 'draft' | 'submit') => {
     if (!formData.type || !formData.title || !formData.content) {
-      toast.error('필수 항목을 모두 입력해주세요.');
+      toast.error('결재 기본 정보를 모두 입력해주세요.');
       return;
     }
 
@@ -245,25 +246,80 @@ export function ApprovalDraft() {
       return;
     }
 
-    // 구매요청서의 경우 필수 필드 추가 검증
+    // 결재 유형별 필수 항목 검사
     if (formData.type === 'purchase') {
       if (!formData.itemName || !formData.quantity || !formData.unitPrice) {
         toast.error('구매 품목, 수량, 단가를 모두 입력해주세요.');
         return;
       }
+    } else if (formData.type === 'education') {
+      if (!formData.educationName || !formData.educationDate || !formData.educationCost) {
+        toast.error('교육 이름, 날짜, 금액을 모두 입력해주세요.');
+        return;
+      }
+    } else if (formData.type === 'vacation') {
+      if (vacationSchedules.length === 0) {
+        toast.error('휴가 일정을 하나 이상 추가해주세요.');
+        return;
+      }
+
+      vacationSchedules.forEach(schedule => {
+        if (schedule.type === 'full') {
+          if (!schedule.startDate || !schedule.endDate ) {
+            toast.error('휴가 일정을 모두 입력해주세요.');
+            return;
+          }
+        } else {
+          if (!schedule.startDate || !schedule.startTime || !schedule.endTime) {
+            toast.error('휴가 일정을 모두 입력해주세요.');
+            return;
+          }
+        }
+      })
+    } else if (formData.type === 'expense') {
+      if (!formData.expenseCategory || !formData.amount || !formData.vendor) {
+        toast.error('지출 카테고리, 금액, 공급업체를 모두 입력해주세요.');
+        return;
+      }
     }
 
-    // 첨부파일이 있는 경우 파일 정보도 포함
+    // 결재자 정보 별도 추출
+    const approverMembers: ApprovalMember[] = approvers.map((a, index) => ({
+      memberId: a.memberId,
+      sequence: index
+    }));
+
+    // 참조자 정보 별도 추출
+    const referenceMembers: ReferenceMember[] = references.map((a, index) => ({
+      memberId: a.memberId,
+      sequence: index
+    }));
+
+    // 결재 요청 정보
     const submissionData = {
-      ...formData,
-      approvers,
-      references,
-      attachedFiles: attachedFiles.map(f => ({
-        id: f.id,
-        name: f.name,
-        size: f.size,
-        type: f.type
-      }))
+      // 결재 기본 정보
+      type : formData.type,
+      title : formData.title,
+      content : formData.content,
+      // 결재자 & 참조자
+      approvers : approverMembers,
+      references : referenceMembers,
+      // 휴가신청서
+      vacationSchedules : vacationSchedules,
+      // 구매요청서
+      itemName : formData.itemName,
+      quantity : formData.quantity,
+      unitPrice : formData.unitPrice,
+      // 교육신청서
+      educationName : formData.educationName,
+      educationDate : formData.educationDate,
+      educationCost : formData.educationCost,
+      // 지출결의서
+      expenseCategory: formData.expenseCategory,
+      amount: formData.amount,
+      vendor: formData.vendor,
+      // 첨부 파일
+      attachedFiles: attachedFiles
     };
 
     const message = action === 'draft' ? 
@@ -278,11 +334,11 @@ export function ApprovalDraft() {
 
   const addMember = (member: Member, type: 'approver' | 'reference') => {
     if (type === 'approver') {
-      if (!approvers.find(a => a.id === member.id)) {
+      if (!approvers.find(a => a.memberId === member.memberId)) {
         setApprovers(prev => [...prev, member]);
       }
     } else {
-      if (!references.find(r => r.id === member.id)) {
+      if (!references.find(r => r.memberId === member.memberId)) {
         setReferences(prev => [...prev, member]);
       }
     }
@@ -291,9 +347,9 @@ export function ApprovalDraft() {
 
   const removeMember = (memberId: string, type: 'approver' | 'reference') => {
     if (type === 'approver') {
-      setApprovers(prev => prev.filter(a => a.id !== memberId));
+      setApprovers(prev => prev.filter(a => a.memberId !== memberId));
     } else {
-      setReferences(prev => prev.filter(r => r.id !== memberId));
+      setReferences(prev => prev.filter(r => r.memberId !== memberId));
     }
   };
 
@@ -341,7 +397,8 @@ export function ApprovalDraft() {
   const addVacationSchedule = () => {
     const newSchedule: VacationSchedule = {
       id: Date.now().toString(),
-      date: undefined,
+      startDate: undefined,
+      endDate: undefined,
       type: 'full',
       startTime: '',
       endTime: '',
@@ -470,9 +527,7 @@ export function ApprovalDraft() {
   const getVacationTypeLabel = (type: string) => {
     switch (type) {
       case 'full': return '전일';
-      case 'half_morning': return '오전반차';
-      case 'half_afternoon': return '오후반차';
-      case 'hours': return '시간단위';
+      case 'hours': return '시차';
       default: return '';
     }
   };
@@ -538,12 +593,32 @@ export function ApprovalDraft() {
                             </Button>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {/* 날짜 선택 */}
+                          <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
                             <div className="space-y-2">
-                              <Label>날짜 *</Label>
-                              <Popover 
-                                open={openCalendar[`schedule_${schedule.id}`] || false} 
+                              <Label>휴가 종류 *</Label>
+                              <Select
+                                  value={schedule.type}
+                                  onValueChange={(value: 'full' | 'hours') =>
+                                      updateVacationSchedule(schedule.id, { type: value })
+                                  }
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="휴가 종류를 선택하세요" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="full">전일</SelectItem>
+                                  <SelectItem value="hours">시간단위</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+
+                          <div className={schedule.type === 'full' ? "grid grid-cols-1 md:grid-cols-2 gap-3" : "grid grid-cols-1 md:grid-cols-1 gap-3"}>
+                            {/* 시작 날짜 선택 */}
+                            <div className="space-y-2">
+                              <Label>{schedule.type === 'full' ? '시작 날짜 *' : '날짜'}</Label>
+                              <Popover
+                                open={openCalendar[`schedule_${schedule.id}`] || false}
                                 onOpenChange={(open) => toggleCalendar(`schedule_${schedule.id}`, open)}
                               >
                                 <PopoverTrigger asChild>
@@ -551,19 +626,19 @@ export function ApprovalDraft() {
                                     variant="outline"
                                     className={cn(
                                       "w-full justify-start text-left font-normal",
-                                      !schedule.date && "text-muted-foreground"
+                                      !schedule.startDate && "text-muted-foreground"
                                     )}
                                   >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {formatDate(schedule.date)}
+                                    {formatDate(schedule.startDate)}
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0" align="start">
                                   <Calendar
                                     mode="single"
-                                    selected={schedule.date}
+                                    selected={schedule.startDate}
                                     onSelect={(date) => {
-                                      updateVacationSchedule(schedule.id, { date });
+                                      updateVacationSchedule(schedule.id, { startDate: date });
                                       toggleCalendar(`schedule_${schedule.id}`, false);
                                     }}
                                     initialFocus
@@ -572,26 +647,40 @@ export function ApprovalDraft() {
                               </Popover>
                             </div>
 
-                            {/* 휴가 종류 */}
+                            {/* 종료 날짜 선택 */}
+                            {schedule.type === 'full' && (
                             <div className="space-y-2">
-                              <Label>휴가 종류 *</Label>
-                              <Select 
-                                value={schedule.type} 
-                                onValueChange={(value: 'full' | 'half_morning' | 'half_afternoon' | 'hours') => 
-                                  updateVacationSchedule(schedule.id, { type: value })
-                                }
+                              <Label>종료 날짜 *</Label>
+                              <Popover
+                                  open={openCalendar[`schedule_end_${schedule.id}`] || false}
+                                  onOpenChange={(open) => toggleCalendar(`schedule_end_${schedule.id}`, open)}
                               >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="휴가 종류를 선택하세요" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="full">전일</SelectItem>
-                                  <SelectItem value="half_morning">오전반차</SelectItem>
-                                  <SelectItem value="half_afternoon">오후반차</SelectItem>
-                                  <SelectItem value="hours">시간단위</SelectItem>
-                                </SelectContent>
-                              </Select>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                      variant="outline"
+                                      className={cn(
+                                          "w-full justify-start text-left font-normal",
+                                          !schedule.endDate && "text-muted-foreground"
+                                      )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {formatDate(schedule.endDate)}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                  <Calendar
+                                      mode="single"
+                                      selected={schedule.endDate}
+                                      onSelect={(endDate) => {
+                                        updateVacationSchedule(schedule.id, { endDate });
+                                        toggleCalendar(`schedule_end_${schedule.id}`, false);
+                                      }}
+                                      initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
                             </div>
+                            )}
                           </div>
 
                           {/* 시간 단위 선택 시 시간 입력 */}
@@ -639,7 +728,7 @@ export function ApprovalDraft() {
                         <span className="text-sm font-medium">총 {vacationSchedules.length}일:</span>
                         {vacationSchedules.map((schedule, index) => (
                           <Badge key={schedule.id} variant="secondary" className="text-xs">
-                            {schedule.date ? formatDate(schedule.date) : '미설정'} 
+                            {schedule.startDate ? formatDate(schedule.startDate) : '미설정'}
                             ({getVacationTypeLabel(schedule.type)})
                             {schedule.type === 'hours' && schedule.startTime && schedule.endTime && 
                               ` ${schedule.startTime}~${schedule.endTime}`
@@ -650,96 +739,6 @@ export function ApprovalDraft() {
                     </CardContent>
                   </Card>
                 )}
-              </div>
-            </CardContent>
-          </Card>
-        );
-
-      case 'business_trip':
-        return (
-          <Card className="mt-4">
-            <CardHeader>
-              <CardTitle>출장 정보</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="destination">출장지 *</Label>
-                <Input
-                  id="destination"
-                  placeholder="출장지를 입력하세요"
-                  value={formData.destination}
-                  onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>출장 시작일 *</Label>
-                  <Popover open={openCalendar.startDate || false} onOpenChange={(open) => toggleCalendar('startDate', open)}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !formData.startDate && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {formatDate(formData.startDate)}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={formData.startDate}
-                        onSelect={(date) => handleDateSelect(date, 'startDate')}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <div className="space-y-2">
-                  <Label>출장 종료일 *</Label>
-                  <Popover open={openCalendar.endDate || false} onOpenChange={(open) => toggleCalendar('endDate', open)}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !formData.endDate && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {formatDate(formData.endDate)}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={formData.endDate}
-                        onSelect={(date) => handleDateSelect(date, 'endDate')}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="tripPurpose">출장 목적 *</Label>
-                <Textarea
-                  id="tripPurpose"
-                  placeholder="출장 목적을 입력하세요"
-                  value={formData.tripPurpose}
-                  onChange={(e) => setFormData(prev => ({ ...prev, tripPurpose: e.target.value }))}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="estimatedCost">예상 비용</Label>
-                <Input
-                  id="estimatedCost"
-                  placeholder="예상 비용을 입력하세요 (원)"
-                  value={formData.estimatedCost}
-                  onChange={(e) => setFormData(prev => ({ ...prev, estimatedCost: e.target.value }))}
-                />
               </div>
             </CardContent>
           </Card>
@@ -827,15 +826,6 @@ export function ApprovalDraft() {
                     onChange={(e) => setFormData(prev => ({ ...prev, unitPrice: e.target.value }))}
                   />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="vendor">공급업체</Label>
-                <Input
-                  id="vendor"
-                  placeholder="공급업체명을 입력하세요"
-                  value={formData.vendor}
-                  onChange={(e) => setFormData(prev => ({ ...prev, vendor: e.target.value }))}
-                />
               </div>
 
               {/* 총 금액 계산 */}
@@ -987,62 +977,6 @@ export function ApprovalDraft() {
           </Card>
         );
 
-      case 'overtime':
-        return (
-          <Card className="mt-4">
-            <CardHeader>
-              <CardTitle>연장근무 정보</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>연장근무일 *</Label>
-                <Popover open={openCalendar.overtimeDate || false} onOpenChange={(open) => toggleCalendar('overtimeDate', open)}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !formData.overtimeDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formatDate(formData.overtimeDate)}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={formData.overtimeDate}
-                      onSelect={(date) => handleDateSelect(date, 'overtimeDate')}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="overtimeStartTime">시작 시간 *</Label>
-                  <Input
-                    id="overtimeStartTime"
-                    type="time"
-                    value={formData.overtimeStartTime}
-                    onChange={(e) => setFormData(prev => ({ ...prev, overtimeStartTime: e.target.value }))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="overtimeEndTime">종료 시간 *</Label>
-                  <Input
-                    id="overtimeEndTime"
-                    type="time"
-                    value={formData.overtimeEndTime}
-                    onChange={(e) => setFormData(prev => ({ ...prev, overtimeEndTime: e.target.value }))}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        );
-
       default:
         return null;
     }
@@ -1065,7 +999,7 @@ export function ApprovalDraft() {
               <CardTitle>기본 정보</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="type">결재 유형 *</Label>
                   <Select 
@@ -1108,20 +1042,6 @@ export function ApprovalDraft() {
                           {type.label}
                         </SelectItem>
                       ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="urgency">긴급도</Label>
-                  <Select value={formData.urgency} onValueChange={(value) => setFormData(prev => ({ ...prev, urgency: value }))}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">낮음</SelectItem>
-                      <SelectItem value="normal">보통</SelectItem>
-                      <SelectItem value="high">높음</SelectItem>
-                      <SelectItem value="urgent">긴급</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1184,7 +1104,7 @@ export function ApprovalDraft() {
                     </div>
                     {approvers.map((approver, index) => (
                       <DraggableApprover
-                        key={approver.id}
+                        key={approver.memberId}
                         approver={approver}
                         index={index}
                         moveApprover={moveApprover}
@@ -1225,7 +1145,7 @@ export function ApprovalDraft() {
                     </div>
                     {references.map((reference, index) => (
                       <DraggableReference
-                        key={reference.id}
+                        key={reference.memberId}
                         reference={reference}
                         index={index}
                         moveReference={moveReference}
@@ -1271,7 +1191,7 @@ export function ApprovalDraft() {
                 )
                 .map((member) => (
                   <div
-                    key={member.id}
+                    key={member.memberId}
                     onClick={() => addMember(member, selectingFor)}
                     className="p-3 border rounded-lg cursor-pointer hover:bg-accent/50 transition-colors"
                   >
